@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: Entering the Room
+  slug: entering-the-room
+  tradition: Soto Zen
+  summary: A brief opening script.
+  body: Sit down and notice the breath.
+  source_note: Original public-use meditation script.
+  position: 1
+
+two:
+  title: The Breath Before the Question
+  slug: breath-before-the-question
+  tradition: Soto Zen
+  summary: A reflection for questions.
+  body: Bring the question back to breathing.
+  source_note: Original public-use meditation script.
+  position: 1

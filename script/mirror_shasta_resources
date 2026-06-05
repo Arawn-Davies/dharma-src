@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mkdir -p public/resources/shasta
+
+download() {
+  local url="$1"
+  local filename="$2"
+
+  curl -L --fail --show-error --output "public/resources/shasta/${filename}" "${url}"
+}
+
+download "https://shastaabbey.org/pdf/SRM.pdf" "serene-reflection-meditation.pdf"
+download "http://www.shastaabbey.org/pdf/bookRoar1.pdf" "roar-of-the-tigress-volume-one.pdf"
+download "https://shastaabbey.org/pdf/BuddhismFromWithin.pdf" "buddhism-from-within.pdf"
+download "http://www.shastaabbey.org/pdf/bookZel.pdf" "zen-is-eternal-life.pdf"
+download "https://shastaabbey.org/wp-content/uploads/2022/06/Wild-White-Goose-Lulu.pdf" "wild-white-goose.pdf"
+download "http://www.shastaabbey.org/pdf/bookSotoZen.pdf" "soto-zen.pdf"
+download "http://www.shastaabbey.org/pdf/bookRoar2.pdf" "roar-of-the-tigress-volume-two.pdf"
+download "https://shastaabbey.org/pdf/bookDenk00.pdf" "denkoroku-front-matter.pdf"
+download "https://shastaabbey.org/pdf/bookDenk01.pdf" "denkoroku-introduction.pdf"
+download "https://shastaabbey.org/pdf/bookDenk02.pdf" "denkoroku-pages-1-98.pdf"
+download "https://shastaabbey.org/pdf/bookDenk03.pdf" "denkoroku-pages-99-225.pdf"
+download "https://shastaabbey.org/pdf/bookDenk04.pdf" "denkoroku-pages-226-308.pdf"
+download "http://www.shastaabbey.org/pdf/shoboAll.pdf" "shobogenzo.pdf"
+download "https://shastaabbey.org/wp-content/uploads/2022/06/Lotus-Blossom-POD-3rd-pr-compressed_1.pdf" "how-to-grow-a-lotus-blossom.pdf"
+download "https://shastaabbey.org/wp-content/uploads/2022/06/Buddhist-Writings-scan.pdf" "buddhist-writings-on-meditation-and-daily-practice.pdf"
+download "http://www.shastaabbey.org/pdf/IntroSRM13.pdf" "introduction-to-the-tradition-of-serene-reflection-meditation.pdf"
+download "https://shastaabbey.org/wp-content/uploads/2025/02/Book-of-Ceremonies-8-24-24.pdf" "book-of-daily-ceremonies.pdf"

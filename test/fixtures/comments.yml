@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  literature: one
+  user: one
+  body: How do I stay with this?
+
+two:
+  literature: two
+  user: two
+  body: What should I notice first?

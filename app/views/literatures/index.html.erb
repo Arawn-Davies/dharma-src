@@ -1,0 +1,24 @@
+<% content_for :title, "dharma-src" %>
+
+<section class="hero">
+  <p class="eyebrow">Soto Zen practice resources</p>
+  <h1>Free serene reflection meditation scripts and Throssel downloads in one quiet place.</h1>
+  <p>
+    Read original meditation pieces, open Throssel Hole Buddhist Abbey practice downloads, and join a question-and-answer discussion on each item.
+  </p>
+</section>
+
+<section class="library-list" aria-label="Meditation library">
+  <% @literatures.each do |literature| %>
+    <article class="literature-card">
+      <div>
+        <p class="eyebrow">
+          <%= [literature.tradition, literature.resource_kind, literature.resource_format].compact_blank.join(" / ") %>
+        </p>
+        <h2><%= link_to literature.title, literature_path(literature) %></h2>
+        <p><%= literature.summary %></p>
+      </div>
+      <%= link_to literature.downloadable? ? "Open and discuss" : "Read and discuss", literature_path(literature), class: "button button-small" %>
+    </article>
+  <% end %>
+</section>

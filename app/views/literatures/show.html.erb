@@ -1,0 +1,88 @@
+<% content_for :title, @literature.title %>
+
+<article class="reading">
+  <%= link_to "All items", literatures_path, class: "back-link" %>
+  <p class="eyebrow">
+    <%= [@literature.tradition, @literature.resource_kind, @literature.resource_format].compact_blank.join(" / ") %>
+  </p>
+  <h1><%= @literature.title %></h1>
+  <p class="summary"><%= @literature.summary %></p>
+
+  <% if @literature.downloadable? %>
+    <div class="download-panel">
+      <p><%= @literature.body %></p>
+      <div class="resource-actions">
+        <% if @literature.mirrored? %>
+          <%= link_to "Open local copy", @literature.local_resource_path, class: "button", target: "_blank", rel: "noopener noreferrer" %>
+          <%= link_to "Original source", @literature.resource_url, target: "_blank", rel: "noopener noreferrer" %>
+        <% else %>
+          <%= link_to "Open source", @literature.resource_url, class: "button", target: "_blank", rel: "noopener noreferrer" %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if @literature.inline_preview? %>
+      <section class="resource-preview" aria-label="Resource preview">
+        <div class="section-heading">
+          <h2>Preview</h2>
+          <p><%= @literature.resource_format %></p>
+        </div>
+
+        <% if @literature.pdf_resource? %>
+          <iframe
+            src="<%= @literature.display_resource_url %>"
+            title="<%= @literature.title %> PDF preview"
+            loading="lazy"></iframe>
+        <% elsif @literature.audio_resource? %>
+          <audio controls preload="metadata" src="<%= @literature.display_resource_url %>">
+            <%= link_to "Open audio source", @literature.display_resource_url, target: "_blank", rel: "noopener noreferrer" %>
+          </audio>
+        <% end %>
+      </section>
+    <% end %>
+  <% else %>
+    <div class="reading-body">
+      <%= simple_format @literature.body %>
+    </div>
+  <% end %>
+
+  <p class="source-note"><%= @literature.source_note %></p>
+  <% if @literature.attribution.present? %>
+    <p class="source-note"><%= @literature.attribution %></p>
+  <% end %>
+</article>
+
+<section class="discussion">
+  <div class="section-heading">
+    <h2>Q/A discussion</h2>
+    <p><%= pluralize(@comments.size, "comment") %></p>
+  </div>
+
+  <% if authenticated? %>
+    <% if @comment.errors.any? %>
+      <div class="flash flash-alert"><%= @comment.errors.full_messages.to_sentence %></div>
+    <% end %>
+
+    <%= form_with model: [@literature, @comment], class: "comment-form" do |form| %>
+      <%= form.text_area :body, required: true, rows: 5, placeholder: "Ask a question or add a reflection..." %>
+      <%= form.submit "Post comment", class: "button" %>
+    <% end %>
+  <% else %>
+    <div class="signin-prompt">
+      <p>Sign in to ask a question or join the discussion.</p>
+      <%= link_to "Sign in", new_session_path, class: "button button-small" %>
+    </div>
+  <% end %>
+
+  <div class="comments">
+    <% @comments.each do |comment| %>
+      <article class="comment">
+        <header>
+          <strong><%= comment.user.email_address %></strong>
+          <time datetime="<%= comment.created_at.iso8601 %>"><%= comment.created_at.strftime("%b %-d, %Y") %></time>
+        </header>
+        <%= simple_format comment.body %>
+      </article>
+    <% end %>
+  </div>
+</section>
