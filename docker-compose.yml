@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dharma-src:latest
+    container_name: app
+    ports:
+      - "3000:80"
+    environment:
+      RAILS_ENV: production
+      RAILS_LOG_LEVEL: info
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-dharma_src_local_compose_secret_key_base_replace_for_public_deployments}
+    volumes:
+      - dharma_src_storage:/rails/storage
+    command: ["./bin/thrust", "./bin/rails", "server"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost/up || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  setup:
+    image: dharma-src:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      RAILS_ENV: production
+      RAILS_LOG_LEVEL: info
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-dharma_src_local_compose_secret_key_base_replace_for_public_deployments}
+    volumes:
+      - dharma_src_storage:/rails/storage
+    command: ["./bin/rails", "db:prepare", "db:seed"]
+
+volumes:
+  dharma_src_storage:

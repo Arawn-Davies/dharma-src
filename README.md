@@ -1,24 +1,47 @@
-# README
+# dharma-src
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A Rails app collecting Soto Zen and Serene Reflection Meditation resources, with
+local discussion pages for each item.
 
-Things you may want to cover:
+## Docker Compose
 
-* Ruby version
+Run the app locally with Docker Compose:
 
-* System dependencies
+```sh
+cp .env.example .env
+docker compose build
+docker compose run --rm setup
+docker compose up -d app
+docker attach app
+```
 
-* Configuration
+Then open:
 
-* Database creation
+```text
+http://localhost:3000
+```
 
-* Database initialization
+The Compose service:
 
-* How to run the test suite
+- builds the production Rails image
+- provides a one-shot `setup` service for `db:prepare` and `db:seed`
+- stores SQLite databases in the `dharma_src_storage` Docker volume
+- serves the app on host port `3000`
 
-* Services (job queues, cache servers, search engines, etc.)
+On systems with the legacy Compose binary, use `docker-compose` in place of
+`docker compose`.
 
-* Deployment instructions
+For a public deployment, replace `SECRET_KEY_BASE` in `.env` with:
 
-* ...
+```sh
+openssl rand -hex 64
+```
+
+## Tests
+
+The current app was developed and tested through Docker:
+
+```sh
+docker run --rm -v "$PWD:/app" -w /app ruby:3.3 \
+  bash -lc "bundle install && bundle exec rails test"
+```
